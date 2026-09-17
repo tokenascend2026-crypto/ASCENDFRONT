@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Plano de Desenvolvimento</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b1020;
+      color: #e8ecf5;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1200px, 94%);
+      margin: auto;
+    }
+
+    header {
+      padding: 35px 0 25px;
+      border-bottom: 1px solid #252d44;
+    }
+
+    header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #9da8bd;
+    }
+
+    /* DASHBOARD */
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .card {
+      background: #12192b;
+      border: 1px solid #252d44;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-title {
+      color: #9da8bd;
+      font-size: 13px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .card-value {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .progress-container {
+      background: #252d44;
+      height: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #4ade80;
+      transition: width .3s;
+    }
+
+    /* FASES */
+
+    .phase {
+      background: #12192b;
+      border: 1px solid #252d44;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .phase-header {
+      padding: 18px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .phase-header:hover {
+      background: #161f35;
+    }
+
+    .phase-title {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .phase-progress {
+      color: #9da8bd;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .phase-content {
+      display: none;
+      padding: 0 20px 20px;
+    }
+
+    .phase.open .phase-content {
+      display: block;
+    }
+
+    .task {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #1d263b;
+    }
+
+    .task:last-child {
+      border-bottom: none;
+    }
+
+    .task input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      cursor: pointer;
+      accent-color: #4ade80;
+    }
+
+    .task label {
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .task input:checked + label {
+      color: #68738a;
+      text-decoration: line-through;
+    }
+
+    /* GATE */
+
+    .gate {
+      margin-top: 18px;
+      padding: 15px;
+      border-left: 4px solid #facc15;
+      background: #1b1d27;
+      border-radius: 6px;
+    }
+
+    .gate strong {
+      color: #facc15;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .gate p {
+      color: #c7cedc;
+      font-size: 14px;
+    }
+
+    /* REGRA DE OURO */
+
+    .golden-rule {
+      margin: 35px 0;
+      background: #12192b;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .golden-rule h2 {
+      color: #facc15;
+      margin-bottom: 20px;
+    }
+
+    .flow {
+      text-align: center;
+      color: #cbd3e2;
+      font-weight: bold;
+    }
+
+    .flow span {
+      display: block;
+      margin: 8px 0;
+      color: #4ade80;
+    }
+
+    .never {
+      margin-top: 25px;
+      padding: 15px;
+      background: #29151a;
+      border-left: 4px solid #ef4444;
+      border-radius: 5px;
+    }
+
+    .never strong {
+      color: #f87171;
+    }
+
+    .never ul {
+      margin: 10px 0 0 20px;
+      color: #d5d9e3;
+    }
+
+    /* ORDEM */
+
+    .order {
+      margin: 35px 0;
+    }
+
+    .order h2 {
+      margin-bottom: 20px;
+    }
+
+    .order-item {
+      background: #12192b;
+      border: 1px solid #252d44;
+      padding: 12px 15px;
+      margin-bottom: 7px;
+      border-radius: 7px;
+    }
+
+    .arrow {
+      text-align: center;
+      color: #4ade80;
+      margin-bottom: 7px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 35px 0;
+      color: #68738a;
+      font-size: 13px;
+    }
+
+    button {
+      background: #4ade80;
+      color: #07110b;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    @media (max-width: 700px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+
+      .phase-header {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>🚀 Plano de Desenvolvimento</h1>
+    <p>Token • Airdrop • Backend • Frontend • Liquidez • Segurança • Mainnet</p>
+  </header>
+
+  <!-- DASHBOARD -->
+
+  <section class="dashboard">
+
+    <div class="card">
+      <div class="card-title">Progresso geral</div>
+      <div class="card-value" id="overallProgress">0%</div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="overallBar"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Tarefas concluídas</div>
+      <div class="card-value" id="completedTasks">0 / 0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Fase atual</div>
+      <div class="card-value" id="currentPhase">01</div>
+    </div>
+
+  </section>
+
+  <!-- FASE 01 -->
+
+  <section class="phase open">
+
+    <div class="phase-header">
+      <div class="phase-title">FASE 01 — ARQUITETURA</div>
+      <div class="phase-progress">0 / 12</div>
+    </div>
+
+    <div class="phase-content">
+
+      <div class="task">
+        <input type="checkbox" id="01-01">
+        <label for="01-01">01.01 Definir arquitetura geral</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-02">
+        <label for="01-02">01.02 Definir frontend</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-03">
+        <label for="01-03">01.03 Definir backend</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-04">
+        <label for="01-04">01.04 Definir banco de dados</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-05">
+        <label for="01-05">01.05 Definir smart contracts</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-06">
+        <label for="01-06">01.06 Definir comunicação frontend ↔ blockchain</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-07">
+        <label for="01-07">01.07 Definir comunicação frontend ↔ backend</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-08">
+        <label for="01-08">01.08 Definir comunicação backend ↔ blockchain</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-09">
+        <label for="01-09">01.09 Definir carteiras administrativas</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-10">
+        <label for="01-10">01.10 Definir gerenciamento de chaves</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-11">
+        <label for="01-11">01.11 Definir ambiente de desenvolvimento</label>
+      </div>
+
+      <div class="task">
+        <input type="checkbox" id="01-12">
+        <label for="01-12">01.12 Definir ambiente de testes</label>
+      </div>
+
+      <div class="gate">
+        <strong>🔒 GATE 01</strong>
+        <p>Arquitetura documentada e aprovada.</p>
+        <p>Somente então continuar.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FASE 02 -->
+
+  <section class="phase">
+
+    <div class="phase-header">
+      <div class="phase-title">FASE 02 — PREPARAÇÃO DO AMBIENTE</div>
+      <div class="phase-progress">0 / 10</div>
+    </div>
+
+    <div class="phase-content">
+
+      <div class="task"><input type="checkbox" id="02-01"><label for="02-01">02.01 Criar repositório Git</label></div>
+      <div class="task"><input type="checkbox" id="02-02"><label for="02-02">02.02 Criar estrutura de diretórios</label></div>
+      <div class="task"><input type="checkbox" id="02-03"><label for="02-03">02.03 Configurar Node.js</label></div>
+      <div class="task"><input type="checkbox" id="02-04"><label for="02-04">02.04 Configurar Solidity</label></div>
+      <div class="task"><input type="checkbox" id="02-05"><label for="02-05">02.05 Configurar framework de contratos</label></div>
+      <div class="task"><input type="checkbox" id="02-06"><label for="02-06">02.06 Configurar frontend</label></div>
+      <div class="task"><input type="checkbox" id="02-07"><label for="02-07">02.07 Configurar backend</label></div>
+      <div class="task"><input type="checkbox" id="02-08"><label for="02-08">02.08 Configurar variáveis de ambiente</label></div>
+      <div class="task"><input type="checkbox" id="02-09"><label for="02-09">02.09 Configurar rede de testes</label></div>
+      <div class="task"><input type="checkbox" id="02-10"><label for="02-10">02.10 Configurar ferramentas de testes</label></div>
+
+      <div class="gate">
+        <strong>🔒 GATE 02</strong>
+        <p>Projeto compila sem erros.</p>
+        <p>Ambiente de desenvolvimento funcionando.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FASE 03 -->
+
+  <section class="phase">
+
+    <div class="phase-header">
+      <div class="phase-title">FASE 03 — SMART CONTRACT DO TOKEN</div>
+      <div class="phase-progress">0 / 10</div>
+    </div>
+
+    <div class="phase-content">
+
+      <div class="task"><input type="checkbox"><label>03.01 Desenvolver contrato BEP-20</label></div>
+      <div class="task"><input type="checkbox"><label>03.02 Implementar supply</label></div>
+      <div class="task"><input type="checkbox"><label>03.03 Implementar distribuição inicial</label></div>
+      <div class="task"><input type="checkbox"><label>03.04 Implementar funções necessárias</label></div>
+      <div class="task"><input type="checkbox"><label>03.05 Definir permissões administrativas</label></div>
+      <div class="task"><input type="checkbox"><label>03.06 Criar testes unitários</label></div>
+      <div class="task"><input type="checkbox"><label>03.07 Testar mint/burn, se existirem</label></div>
+      <div class="task"><input type="checkbox"><label>03.08 Testar transferências</label></div>
+      <div class="task"><input type="checkbox"><label>03.09 Testar approvals</label></div>
+      <div class="task"><input type="checkbox"><label>03.10 Revisar segurança</label></div>
+
+      <div class="gate">
+        <strong>🔒 GATE 03</strong>
+        <p>100% dos testes essenciais aprovados.</p>
+        <p>Token pronto em ambiente de testes.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- MODELO PARA AS DEMAIS FASES -->
+
+  <section class="phase">
+
+    <div class="phase-header">
+      <div class="phase-title">FASE 04 — CONTRATO DE AIRDROP</div>
+      <div class="phase-progress">0 / 21</div>
+    </div>
+
+    <div class="phase-content">
+
+      <div class="task"><input type="checkbox"><label>04.01 Criar contrato de airdrop</label></div>
+      <div class="task"><input type="checkbox"><label>04.02 Implementar controle de carteira</label></div>
+      <div class="task"><input type="checkbox"><label>04.03 Implementar hasClaimed</label></div>
+      <div class="task"><input type="checkbox"><label>04.04 Implementar quantidade do airdrop</label></div>
+      <div class="task"><input type="checkbox"><label>04.05 Implementar lista dos 5 tokens aceitos</label></div>
+      <div class="task"><input type="checkbox"><label>04.06 Cadastrar USDT</label></div>
+      <div class="task"><input type="checkbox"><label>04.07 Cadastrar USDC</label></div>
+      <div class="task"><input type="checkbox"><label>04.08 Cadastrar FDUSD</label></div>
+      <div class="task"><input type="checkbox"><label>04.09 Cadastrar DAI</label></div>
+      <div class="task"><input type="checkbox"><label>04.10 Cadastrar WBNB</label></div>
+      <div class="task"><input type="checkbox"><label>04.11 Implementar cobrança</label></div>
+      <div class="task"><input type="checkbox"><label>04.12 Implementar distribuição das taxas</label></div>
+      <div class="task"><input type="checkbox"><label>04.13 Implementar 50% liquidez</label></div>
+      <div class="task"><input type="checkbox"><label>04.14 Implementar 50% administração</label></div>
+      <div class="task"><input type="checkbox"><label>04.15 Implementar proteção contra valores inválidos</label></div>
+      <div class="task"><input type="checkbox"><label>04.16 Implementar eventos blockchain</label></div>
+      <div class="task"><input type="checkbox"><label>04.17 Testar segunda tentativa de claim</label></div>
+      <div class="task"><input type="checkbox"><label>04.18 Testar token não autorizado</label></div>
+      <div class="task"><input type="checkbox"><label>04.19 Testar valores incorretos</label></div>
+      <div class="task"><input type="checkbox"><label>04.20 Testar carteira administrativa</label></div>
+      <div class="task"><input type="checkbox"><label>04.21 Testar falhas de transação</label></div>
+
+      <div class="gate">
+        <strong>🔒 GATE 04</strong>
+        <p>Contrato de airdrop aprovado em testes.</p>
+        <p>Não continuar se houver falha crítica.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- REGRA DE OURO -->
+
+  <section class="golden-rule">
+
+    <h2>⚠️ REGRA DE OURO</h2>
+
+    <div class="flow">
+      FASE N
+      <span>↓</span>
+      TESTES
+      <span>↓</span>
+      GATE
+      <span>↓</span>
+      APROVAÇÃO
+      <span>↓</span>
+      FASE N+1
+    </div>
+
+    <div class="never">
+      <strong>NUNCA:</strong>
+
+      <ul>
+        <li>Frontend → antes dos contratos</li>
+        <li>Mainnet → antes da testnet</li>
+        <li>Liquidez → antes de definir a estratégia</li>
+        <li>Airdrop público → antes dos testes</li>
+        <li>Alteração de contrato → depois do lançamento sem revisão</li>
+      </ul>
+    </div>
+
+  </section>
+
+
+  <!-- ORDEM RESUMIDA -->
+
+  <section class="order">
+
+    <h2>📋 ORDEM RESUMIDA</h2>
+
+    <div class="order-item">01. DEFINIR</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">02. ARQUITETAR</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">03. PREPARAR AMBIENTE</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">04. TOKEN</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">05. AIRDROP</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">06. COTAÇÕES</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">07. BACKEND</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">08. PAINEL</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">09. FRONTEND</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">10. INTEGRAÇÃO</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">11. LIQUIDEZ</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">12. SEGURANÇA</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">13. AUDITORIA</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">14. TESTNET</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">15. PREPARAR MAINNET</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">16. MAINNET</div>
+    <div class="arrow">↓</div>
+
+    <div class="order-item">17. MONITORAMENTO</div>
+
+  </section>
+
+
+  <button onclick="resetProject()">
+    Resetar progresso
+  </button>
+
+  <footer>
+    Plano de desenvolvimento — versão inicial
+  </footer>
+
+</div>
+
+
+<script>
+
+  /*
+   * ============================================
+   * CHECKLIST / LOCAL STORAGE
+   * ============================================
+   */
+
+  const STORAGE_KEY = "projeto_checklist";
+
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]'
+  );
+
+  function saveProgress() {
+
+    const data = {};
+
+    checkboxes.forEach((checkbox, index) => {
+      data[index] = checkbox.checked;
+    });
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(data)
+    );
+
+    updateDashboard();
+  }
+
+
+  function loadProgress() {
+
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    checkboxes.forEach((checkbox, index) => {
+
+      if (data[index] !== undefined) {
+        checkbox.checked = data[index];
+      }
+
+    });
+
+    updateDashboard();
+  }
+
+
+  function updateDashboard() {
+
+    const total = checkboxes.length;
+
+    const completed =
+      [...checkboxes]
+        .filter(c => c.checked)
+        .length;
+
+    const percent =
+      total === 0
+        ? 0
+        : Math.round((completed / total) * 100);
+
+    document.getElementById(
+      "overallProgress"
+    ).textContent = percent + "%";
+
+    document.getElementById(
+      "overallBar"
+    ).style.width = percent + "%";
+
+    document.getElementById(
+      "completedTasks"
+    ).textContent =
+      `${completed} / ${total}`;
+
+    updatePhaseProgress();
+  }
+
+
+  function updatePhaseProgress() {
+
+    document.querySelectorAll(
+      ".phase"
+    ).forEach(phase => {
+
+      const tasks =
+        phase.querySelectorAll(
+          'input[type="checkbox"]'
+        );
+
+      const completed =
+        [...tasks]
+          .filter(c => c.checked)
+          .length;
+
+      const counter =
+        phase.querySelector(
+          ".phase-progress"
+        );
+
+      if (counter) {
+
+        counter.textContent =
+          `${completed} / ${tasks.length}`;
+
+      }
+
+    });
+
+  }
+
+
+  function resetProject() {
+
+    const confirmed =
+      confirm(
+        "Deseja realmente apagar todo o progresso?"
+      );
+
+    if (!confirmed) return;
+
+    localStorage.removeItem(
+      STORAGE_KEY
+    );
+
+    checkboxes.forEach(
+      checkbox => checkbox.checked = false
+    );
+
+    updateDashboard();
+  }
+
+
+  /*
+   * ============================================
+   * ABRIR / FECHAR FASES
+   * ============================================
+   */
+
+  document.querySelectorAll(
+    ".phase-header"
+  ).forEach(header => {
+
+    header.addEventListener(
+      "click",
+      () => {
+
+        header.parentElement
+          .classList.toggle("open");
+
+      }
+    );
+
+  });
+
+
+  /*
+   * ============================================
+   * EVENTOS
+   * ============================================
+   */
+
+  checkboxes.forEach(
+    checkbox => {
+
+      checkbox.addEventListener(
+        "change",
+        saveProgress
+      );
+
+    }
+  );
+
+
+  /*
+   * ============================================
+   * INICIALIZAÇÃO
+   * ============================================
+   */
+
+  loadProgress();
+
+</script>
+
+</body>
+</html>
