@@ -1,0 +1,6 @@
+Baixe o arquivo ethers.umd.min.js (versão 6.13.4) pelo seu navegador em:
+
+https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js
+
+Salve-o nesta mesma pasta (libs/) com o nome exato "ethers.umd.min.js",
+substituindo este arquivo de instruções.
